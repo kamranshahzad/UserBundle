@@ -1,0 +1,4 @@
+user_annotation:
+    resource: "@KamranUserBundle/Controller"
+    type:     annotation
+

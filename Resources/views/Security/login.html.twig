@@ -1,0 +1,49 @@
+{% extends themes %}
+
+
+{% block fos_user_content %}
+
+    <!-- login-panel-->
+    <div class="panel">
+
+        <div class="logo">
+            <i class="fa fa-code" style="font-size: 15px;"></i><strong>DEV</strong> <span class="divider vertical"></span> <span style="font-size:14px;">HELPER</span>
+        </div>
+
+        <h5 class="f-size-12">Welcome, Please login.</h5>
+        <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <section>
+                <div class="input-group">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Username" required="required" />
+                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required="required" />
+                    <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                </div>
+            </section>
+            <section class="controls">
+                <div>
+                    <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/>
+                    <label for="remember">Remember me</label>
+                </div>
+            </section>
+            <section class="new-acc">
+                {{ block('action_buttons') }}
+            </section>
+        </form>
+        <br/>
+        {% if error %}
+        <div class="alert alert-red">
+            <strong>Login Failed!</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+    <!-- @login-panel-->
+
+{% endblock fos_user_content %}
+
+{% block action_buttons %}
+    <input class="btn btn-greensea" type="submit" id="_submit" name="_submit" value="Login" />
+{% endblock action_buttons %}
