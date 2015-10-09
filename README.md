@@ -6,7 +6,7 @@
 This bundle provides full user related functionality. This bundle using FOSUserBundle as base Bundle.
 Bootstrap 3.0 is using for UI design for this bundle. 
 
-![alt text](https://github.com/kamranshahzad/UserBundle/blob/master/Resources/public/images/login_screenshot.jpg "Login screenshot")
+![alt text](https://github.com/kamranshahzad/UserBundle/blob/master/Resources/public/images/login_screenshot.png "Login screenshot")
 
 
 ### Key Features:
