@@ -1,0 +1,163 @@
+{% extends 'KamranTestBundle::Layout/page.html.twig' %}
+
+
+{% set currentImage = app.request.getSchemeAndHttpHost() ~ '/ipass/web/uploads/images/' %}
+
+{% block body %}
+
+    <h3>Modify Test</h3>
+
+    <form class="entity" action="{{ path('test_edit', { 'id': entity.id }) }}" method="post" {{ form_enctype(form) }} >
+
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.logo) }}
+
+
+        <div class="form-group">
+        {{ form_widget(form.name) }}
+        </div>
+
+        <div class="imgPreview">
+            <img src="{{ currentImage ~ entity.logo }}" />
+        </div><!--@imgPreview-->
+
+
+        <div class="form-group">
+            {{ form_widget(form.logofile) }}
+        </div>
+
+        <div class="bts-wrapper">
+            <a  class="btn btn-default" id="removeBtn">Remove Image</a>
+        </div>
+        <br/>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="update" />
+        </div>
+
+        <style>
+
+        </style>
+
+        <div class="file-preview">
+            <div class="file-preview-frame">
+                <img src="{{ currentImage ~ entity.logo }}" />
+            </div>
+            <div class="close closeBtn">×</div>
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div class="btn btn-primary browseBtn">
+            <i class="glyphicon glyphicon glyphicon-upload"></i> &nbsp;Upload PNG …
+            <input type="file" name="" id="" />
+        </div>
+
+        <div class="clear-fix"></div>
+
+        <br/>
+
+
+
+    </form>
+
+
+    <script>
+
+        function  uniqId(){
+            return Math.round(new Date().getTime() + (Math.random() * 100));
+        }
+        function isEmpty(value, trim) {
+            return value === null || value === undefined || value == []
+                    || value === '' || trim && $.trim(value) === '';
+        }
+        (function($) {
+            $.fn.fileUpload = function(options){
+
+                var self = this;
+                //self.remove();
+                self.after(self);
+
+                var _html = "<div class='container'></div>";
+                self.before(_html);
+                $( ".container" ).append( self );
+
+
+                //console.log(self);
+
+                var defaults = {
+                  imgWidth  : 50,
+                  imgHeight : 50,
+                  imgSrc    : ''
+                };
+
+                var settings = $.extend( {}, defaults, options );
+
+                if(isEmpty(settings.imgSrc)){
+                    console.log("no image");
+                }else{
+                    console.log('I have Image');
+                }
+
+
+
+
+                //return this.each(function() {});
+                //console.log(settings.imgWidth);
+                //this.hide();
+
+                //$(this).after( "<p>Test</p>" );
+                this.change(function(){
+                    var file = this.files[0];
+                    var id = uniqId();
+                    console.log(id);
+                    var reader = new FileReader();
+                    reader.onerror = function (evt) {
+                        console.log(evt, caption);
+                    };
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        var strText = e.target.result;
+                        //self.after( '<img src="'+strText+'" />');
+                    };
+                });
+
+                return this;
+            };
+
+        })( jQuery );
+
+
+
+        $(function(){
+
+
+
+            $('#person_form_logofile').fileUpload({
+                imgWidth : 300,
+                showImage: true,
+                filedName: '#person_logo_name',
+                imgSrc: '{{ currentImage ~ entity.logo }}'
+            });
+
+
+//            jQuery('#inFile').change(
+//                    function(){ jQuery('#inCopy').val( jQuery('#inFile').val() ); }
+//            );
+
+
+
+            $('#removeBtn').click(function(event ){
+                event.preventDefault();
+                $('#person_form_logo').val('');
+                console.log('Image Removed');
+            });
+
+
+        });
+    </script>
+{% endblock %}
+
+
+
+

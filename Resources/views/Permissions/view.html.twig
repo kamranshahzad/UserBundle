@@ -1,0 +1,69 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <style>
+        label { font-weight:normal;}
+    </style>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Roles</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Manage User Roles <small> You can change all your details </small></h3>
+    </div>
+    <!-- @headings-->
+    <hr/>
+
+    <h4>Role : {{ role_label }} </h4>
+
+    <form action="{{ path('permission_role_view',{'id':id}) }}" method="post" {{ form_enctype(form) }} >
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        {{ form_widget(form) }}
+
+        {{ form_rest(form) }}
+
+        <input class="btn btn-info" type="submit" value="Save Permissions" />
+    </form>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('#rolepermissions_users_0').change(function (event) {
+                if ($(this).is(':checked')) {
+
+                    for(var i = 1; i < 3; i++){
+
+                    }
+                    //$("input[value='rolepermissions[users][]']").prop('checked', true);
+                    /*$("input[value='rolepermissions[users][]']").each(function(){
+                        this.checked=true;
+                    });*/
+
+                    $("input[value='rolepermissions[users][]']").click(function () {
+                        $('input:checkbox').not(this).prop('checked', this.checked);
+                    });
+
+                }else{
+                    //$('.myCheckbox').prop('checked', false);
+                    //console.log("Unchecked");
+                }
+            });
+        });
+    </script>
+
+
+
+{% endblock body %}

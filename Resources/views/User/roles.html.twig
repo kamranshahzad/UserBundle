@@ -1,0 +1,56 @@
+{% extends themes %}
+
+
+{% block body %}
+
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Roles</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Manage User Roles <small> You can change all your details </small></h3>
+    </div>
+    <!-- @headings-->
+
+    <br/>
+    <br/>
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        <a href='{{ path('user_roles_add') }}' class="btn btn-info">Add User Role</a>
+        <div class="clear-fix"></div>
+        <br/>
+
+        <table class="table table-hover" style="width: 600px; font-size: 13px;">
+            <tr>
+                <th align="center">Role ID</th>
+                <th >Role</th>
+                <th >Role Label</th>
+                <th align="center"> Permissions </th>
+                <th align="center"> Actions </th>
+            </tr>
+            {% for role in roles %}
+                <tr>
+                    <td align="center">{{ role.id }}</td>
+                    <td >{{ role.name }}</td>
+                    <td >{{ role.label }}</td>
+                    <td align="center"> <a href="{{ path('permission_role_view',{'id':role.id}) }}">Permissions</a></td>
+                    <td align="center">
+                        <a href="{{ path('user_roles_edit',{'id':role.id}) }}">Modify</a> |
+                        <a href="{{ path('user_roles_remove',{'id':role.id}) }}" onclick="return confirm('Are you sure you want to delete this role?');">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <hr/>
+
+{% endblock %}

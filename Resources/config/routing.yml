@@ -1,4 +1,6 @@
-user_annotation:
+_kamran_user_urls:
     resource: "@KamranUserBundle/Controller"
-    type:     annotation
+    type: annotation
 
+login_check:
+    path: /login_check

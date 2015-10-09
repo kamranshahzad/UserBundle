@@ -1,0 +1,50 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Roles</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Modify User Role <small> You can change all your details </small></h3>
+    </div>
+    <!-- @headings-->
+
+    <br/>
+
+
+    <div style="max-width: 400px">
+        <form action="{{ path('user_roles_edit',{'id': id}) }}" method="post" role="form">
+
+            {{ form_widget(form._token) }}
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Role Name:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Role name required in proper format. For example, 'ROLE_ANYNAME' " ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label> (machine name)
+                {{ form_widget(form.name) }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Role Label
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Role label is short description of role " ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_widget(form.label) }}
+            </div>
+
+            <div>
+                <input type="submit" value="Save" id="role_btn" class="btn btn-info" />
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'KamranTestBundle::Layout/page.html.twig' %}
+
+
+{% block body %}
+
+    <h3>Add Test</h3>
+
+    <form class="entity" action="{{ path('test_add') }}" method="post" {{ form_enctype(form) }} >
+
+        {{ form_widget(form._token) }}
+
+        <div class="form-group">
+        {{ form_widget(form) }}
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="create" />
+        </div>
+    </form>
+
+
+    <script>
+        $(function(){
+            $('#btnpass').click(function(){
+                console.log($('#person_form_logo').value);
+            });
+        });
+        /*$("#remove").click(function(){
+            $("#fileInput").val("");
+            return false;
+        })*/
+
+
+
+    </script>
+
+{% endblock %}
+
+
+
+

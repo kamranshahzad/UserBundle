@@ -2,81 +2,186 @@
 
 namespace Kamran\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 
 /**
- * Role Entity
+ * Role
  *
- * @ORM\Entity
- * @ORM\Table( name="roles" )
- * @UniqueEntity("role")
+ * @ORM\Table(name="role")
+ * @ORM\Entity(repositoryClass="Kamran\UserBundle\Entity\Repository\RoleRepository")
  */
-class Role implements RoleInterface
+class Role implements RoleInterface, Serializable
 {
-
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", name="role", unique=true, length=70)
-     */
-    protected $role;
-
-    /**
-     * Populate the role field
+     * @var string
      *
-     * @param string $role
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    public function __construct($role)
-    {
-        $this->role = $role;
-    }
+    private $name;
 
     /**
-     * Return the role field.
+     * @var string
      *
-     * @return string
+     * @ORM\Column(name="label", type="string", length=255)
      */
-    public function getRole()
-    {
-        return $this->role;
-    }
+    private $label;
 
     /**
-     * Return the string representation of the role entity.
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
+     */
+    private $users;
+
+
+
+    /**
+     * To string
      *
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->role;
+        return $this->name;
     }
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return BigfootRole
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 
     /**
-     * Modify the role field.
+     * Get name
      *
-     * @param string $role ROLE_FOO etc
+     * @return string
      */
-    public function setRole($role)
+    public function getName()
     {
-        $this->role = $role;
+        return $this->name;
     }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     * @return BigfootRole
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Set Users
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $users
+     * @return Role
+     */
+    public function setUsers(ArrayCollection $users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+
+    /**
+     * Returns the role.
+     *
+     * This method returns a string representation whenever possible.
+     *
+     * When the role cannot be represented with sufficient precision by a
+     * string, it should return null.
+     *
+     * @return string|null A string representation of the role, or null
+     */
+    public function getRole()
+    {
+        return $this->name;
+    }
+
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->id,
+                $this->name,
+            )
+        );
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->name,
+            ) = unserialize($serialized);
+    }
+
+
 }

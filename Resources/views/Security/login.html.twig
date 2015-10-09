@@ -1,49 +1,57 @@
+{# extends '::base.html.twig' #}
 {% extends themes %}
 
+{% block body %}
 
-{% block fos_user_content %}
+    <style type="text/css">
+        h4 { padding: 0px; margin: 0px;}
+        .alert { margin: 30px auto; width:60%; }
+    </style>
 
-    <!-- login-panel-->
-    <div class="panel">
+    <form action="{{ path('login_check') }}" method="post" role="form">
 
-        <div class="logo">
-            <i class="fa fa-code" style="font-size: 15px;"></i><strong>DEV</strong> <span class="divider vertical"></span> <span style="font-size:14px;">HELPER</span>
-        </div>
-
-        <h5 class="f-size-12">Welcome, Please login.</h5>
-        <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-            <section>
-                <div class="input-group">
-                    <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Username" required="required" />
-                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required="required" />
-                    <div class="input-group-addon"><i class="fa fa-key"></i></div>
-                </div>
-            </section>
-            <section class="controls">
-                <div>
-                    <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/>
-                    <label for="remember">Remember me</label>
-                </div>
-            </section>
-            <section class="new-acc">
-                {{ block('action_buttons') }}
-            </section>
-        </form>
-        <br/>
-        {% if error %}
-        <div class="alert alert-red">
-            <strong>Login Failed!</strong> {{ error }}
-        </div>
+        {% if error  %}
+            <div class="alert alert-danger" role="alert">
+                <p class="message">{{error.message}}</p>
+            </div>
         {% endif %}
-    </div>
-    <!-- @login-panel-->
 
-{% endblock fos_user_content %}
+        <div class="login-container">
+        <div class="login-header">
+            <h4>Login</h4>
+        </div>
+        <div class="login-form">
+            <h5 class="noteText">Welcome, Please login.</h5>
 
-{% block action_buttons %}
-    <input class="btn btn-greensea" type="submit" id="_submit" name="_submit" value="Login" />
-{% endblock action_buttons %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Password</label>
+                <input type="password" autocomplete="off" id="password" name="_password" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox"> <span style="font-size:12px;">Remember me</span>
+                </label>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-success" type="submit">Log In&nbsp;<i class="fa fa-chevron-circle-right"></i></button>
+            </div>
+            <div class="clearfix"></div>
+            <hr>
+            <p>
+                <a href="{{path('account_forgetpassword')}}">
+                FORGET YOUR PASSWORD?
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{{path('account_register')}}" id="btn-register">SIGN UP</a>
+            </p>
+        </div>
+    </div><!--@login-container-->
+    </form>
+
+{% endblock %}

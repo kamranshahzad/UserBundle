@@ -1,0 +1,8 @@
+parameters:
+  kamran.user.command.class: Kamran\UserBundle\Command\UserCreateCommand
+
+services:
+  kamran.user.command:
+    class: %kamran.user.command.class%
+    tags:
+      - { name: console.command }

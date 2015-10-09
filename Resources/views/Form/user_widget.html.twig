@@ -1,0 +1,94 @@
+
+
+{% block form_row %}
+    {% spaceless %}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock form_row %}
+
+
+{% block rolepermissions_widget %}
+<div class="form-group">
+
+    <table class="table table-striped" style="font-size:13px;">
+
+    {% for key,child in form %}
+        {% if key != '_token' %}
+        <tr>
+            <td><h5><b>{{ key |capitalize }}<b></h5></td>
+            <td>
+                <div class="row" >
+                    {% set index = 1 %}
+                    {% set class = ';color:red;font-weight:bold !important;' %}
+                    {% for kid in child %}
+                    <div class="col-sm-4">
+                                {{ form_widget(kid) }}
+                                <span style="color:#000033;{{ index == 1 ? class : '' }}">
+                        &#32;{{ form_label(kid) }}
+                    </span>
+                    </div>
+                    {% set index = index + 1 %}
+                    {% endfor %}
+                </div>
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block acloptions_widget %}
+
+    {% set index = 1 %}
+    {% set class = ';color:red;font-weight:bold !important;' %}
+    {% for child in form %}
+        {% for kid in child %}
+            <div class="col-sm-4">
+               {{ form_widget(kid) }}
+               <span style="color:#000033;{{ index == 1 ? class : '' }}">
+                &#32;{{ form_label(kid) }}
+            </span>
+            </div>
+            {% set index = index + 1 %}
+        {% endfor %}
+    {% endfor %}
+
+{% endblock acloptions_widget %}
+
+
+
+{% block accessoptions_widget %}
+    asdasd
+    <div class="form-group">
+        <h5>{{ form.vars.label }}</h5>
+        <div style="padding-left: 10px;">
+            <table class="table table-striped" style="font-size:13px;">
+                {% for child in form %}
+                    {{ child.vars.label }}
+                    {% for kid in child %}
+                        <tr>
+                            <td>
+                                <b>{{ kid.vars.label }}</b>
+                            </td>
+                            <td>
+                                {{ form_widget(kid) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock accessoptions_widget %}
+

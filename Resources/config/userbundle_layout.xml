@@ -1,0 +1,10 @@
+<layout>
+
+
+    <regions>
+        <sidebar>
+            <user_links rule="/user" template="user_links.html.twig"></user_links>
+        </sidebar>
+    </regions>
+
+</layout>

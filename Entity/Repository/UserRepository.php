@@ -2,40 +2,53 @@
 
 namespace Kamran\UserBundle\Entity\Repository;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
-/**
- * UserRepository
- */
-class UserRepository extends EntityRepository
+
+
+class UserRepository extends EntityRepository implements UserProviderInterface
 {
-    /**
-     * Get user(s) that have the specified role(s)
-     *
-     * @param string|array $role The role(s) for which you want to retrieve the users
-     *
-     * @return array
-     */
-    public function getUsersByRole($role)
+    public function loadUserByUsername($username)
     {
-        if (is_array($role)) {
-            $roles = $role;
-        } else {
-            $roles = array($role);
+        $q = $this
+            ->createQueryBuilder('u')
+            ->where('u.username = :username OR u.email = :email')
+            ->setParameter('username', $username)
+            ->setParameter('email', $username)
+            ->getQuery()
+        ;
+        
+        $q->getSingleResult();
+
+        try {
+            // The Query::getSingleResult() method throws an exception
+            // if there is no record matching the criteria.
+            $user = $q->getSingleResult();
+
+        } catch (NoResultException $e) {
+            throw new UsernameNotFoundException(sprintf('Unable to find an active admin AcmeUserBundle:User object identified by "%s".', $username), null, 0, $e);
         }
 
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u')
-            ->from('KamranUserBundle:User', 'u')
-            ->innerJoin('u.groups', 'g')
-            ->innerJoin('g.roles', 'r')
-            ->where('u.enabled=1')
-            ->andWhere('u.locked=0')
-            ->andWhere('u.expired=0')
-            ->andWhere('r.role IN (:roles)')
-            ->setParameter('roles', $roles);
-
-        return $qb->getQuery()->getResult();
+        return $user;
     }
 
+    public function refreshUser(UserInterface $user)
+    {
+        $class = get_class($user);
+        if (!$this->supportsClass($class)) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
+        }
+
+        return $this->loadUserByUsername($user->getUsername());
+    }
+
+    public function supportsClass($class)
+    {
+        return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
+    }
 }
